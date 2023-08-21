@@ -2,23 +2,23 @@ import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const App = () => {
-  const [pass, setPass] = useState([]);
+  const [passwords, setPasswords] = useState([]);
   const [range, setRange] = useState(8);
   const [type, setType] = useState({
-    num: true,
-    lcase: true,
-    ucase: true,
-    sym: true,
+    numbers: true,
+    lowercase: true,
+    uppercase: true,
+    symbols: true,
   });
 
   const typeValues = {
-    ucase: "ABCDEFGHIJKLMNOPQRSTUVWXTZ",
-    lcase: "abcdefghiklmnopqrstuvwxyz",
-    num: "0123456789",
-    sym: "~!@#$%^&*()_+=-./<>?;:",
+    uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXTZ",
+    lowercase: "abcdefghiklmnopqrstuvwxyz",
+    numbers: "0123456789",
+    symbols: "~!@#$%^&*()_+=-./<>?;:",
   };
 
-  const genPass = async () => {
+  const generate = async () => {
     const filteredType = Object.keys(type)
       .filter((k) => {
         return type[k];
@@ -41,9 +41,9 @@ const App = () => {
       }
     }
 
-    const tmpPass = [...pass];
+    const tmpPass = [...passwords];
     tmpPass.push(pswd.sort(() => Math.random() - 0.5).join(""));
-    return setPass(tmpPass);
+    return setPasswords(tmpPass);
   };
 
   const handleChangeCheck = (e, t) => {
@@ -65,9 +65,9 @@ const App = () => {
   };
 
   const handleChange = (e) => {
-    const tmpPass = pass;
+    const tmpPass = passwords;
     tmpPass.push(e.target.value);
-    setPass(tmpPass);
+    setPasswords(tmpPass);
   };
 
   const handleChangeRange = (e) => {
@@ -77,16 +77,20 @@ const App = () => {
   };
 
   useEffect(() => {
-    let lstr = window.localStorage.getItem("pass");
-    let larr = lstr.split(",");
-    let tmpPass = [...larr];
-    setPass(tmpPass);
+    let local_passwords = window.localStorage.getItem("passwords");
+    if (local_passwords) {
+      let passwords = local_passwords.split(",");
+      let tmp = [...passwords];
+      setPasswords(tmp);
+    }
   }, []);
 
   useEffect(() => {
-    let lstr = pass.toString();
-    window.localStorage.setItem("pass", lstr);
-  }, [pass]);
+    if (passwords.length > 0) {
+      let passwords_to_store = passwords.toString();
+      window.localStorage.setItem("passwords", passwords_to_store);
+    }
+  }, [passwords]);
 
   return (
     <div className="bg-dark" style={{ "min-height": "100vh" }}>
@@ -107,9 +111,9 @@ const App = () => {
                   className="form-control"
                   placeholder="Password"
                   onChange={(e) => handleChange(e)}
-                  value={pass.slice(-1)}
+                  value={passwords.slice(-1)}
                 />
-                <CopyToClipboard text={pass[0]}>
+                <CopyToClipboard text={passwords[0]}>
                   <button className="btn btn-outline-primary" type="button">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +132,7 @@ const App = () => {
                   className="btn btn-outline-primary"
                   type="button"
                   onClick={() => {
-                    genPass();
+                    generate();
                   }}
                 >
                   Generate
@@ -154,13 +158,13 @@ const App = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
-                    id="ucase"
+                    id="uppercase"
                     onClick={(e) => {
-                      handleChangeCheck(e, "ucase");
+                      handleChangeCheck(e, "uppercase");
                     }}
-                    checked={type.ucase}
+                    checked={type.uppercase}
                   />
-                  <label className="form-check-label" for="ucase">
+                  <label className="form-check-label" for="uppercase">
                     Uppercase
                   </label>
                 </div>
@@ -169,13 +173,13 @@ const App = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
-                    id="lcase"
+                    id="lowercase"
                     onClick={(e) => {
-                      handleChangeCheck(e, "lcase");
+                      handleChangeCheck(e, "lowercase");
                     }}
-                    checked={type.lcase}
+                    checked={type.lowercase}
                   />
-                  <label className="form-check-label" for="lcase">
+                  <label className="form-check-label" for="lowercase">
                     Lowercase
                   </label>
                 </div>
@@ -184,13 +188,13 @@ const App = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
-                    id="num"
+                    id="numbers"
                     onClick={(e) => {
-                      handleChangeCheck(e, "num");
+                      handleChangeCheck(e, "numbers");
                     }}
-                    checked={type.num}
+                    checked={type.numbers}
                   />
-                  <label className="form-check-label" for="num">
+                  <label className="form-check-label" for="numbers">
                     Numbers
                   </label>
                 </div>
@@ -199,13 +203,13 @@ const App = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
-                    id="sym"
+                    id="symbols"
                     onClick={(e) => {
-                      handleChangeCheck(e, "sym");
+                      handleChangeCheck(e, "symbols");
                     }}
-                    checked={type.sym}
+                    checked={type.symbols}
                   />
-                  <label className="form-check-label" for="sym">
+                  <label className="form-check-label" for="symbols">
                     Symbols
                   </label>
                 </div>
@@ -216,13 +220,13 @@ const App = () => {
                   Last 5 Passwords
                 </li>
 
-                {pass.slice(-5).map((el) => {
+                {passwords.slice(-5).map((el) => {
                   return (
                     <li class="list-group-item d-flex justify-content-between">
                       <span className="text-wrap" style={{ width: "95%" }}>
                         {el}
                       </span>{" "}
-                      <CopyToClipboard text={pass[0]} className="">
+                      <CopyToClipboard text={passwords[0]} className="">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
