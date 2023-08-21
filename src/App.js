@@ -220,6 +220,12 @@ const App = () => {
                   Last 5 Passwords
                 </li>
 
+                {passwords.length < 1 && (
+                  <div class="mt-3">
+                    <i>Such empty, Customize your password.</i>
+                  </div>
+                )}
+
                 {passwords.slice(-5).map((el) => {
                   return (
                     <li class="list-group-item d-flex justify-content-between">
