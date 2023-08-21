@@ -1,0 +1,13 @@
+.App {
+    margin: 50px;
+}
+
+.parent {
+    display: flex;
+    justify-content: center;
+}
+
+.child {
+    max-width: 550px;
+    flex: 80 0 0 0;
+}
