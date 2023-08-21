@@ -77,6 +77,8 @@ const App = () => {
   };
 
   useEffect(() => {
+    document.title = 'Password Generator';
+
     let local_passwords = window.localStorage.getItem("passwords");
     if (local_passwords) {
       let passwords = local_passwords.split(",");
