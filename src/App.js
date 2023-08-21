@@ -95,7 +95,7 @@ const App = () => {
   }, [passwords]);
 
   return (
-    <div className="mt-3 m-2 parent">
+    <div className="pt-3 p-2 parent">
       <div className="card child">
         <h3 className="card-header text-center">
           Password Generator
