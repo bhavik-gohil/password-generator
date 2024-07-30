@@ -2,4 +2,4 @@
 
 Create strong passwords
 
-Visit - https://bhavik61.github.io/password-generator/
+Visit - https://bhavik-gohil.github.io/password-generator/
